@@ -1,0 +1,1202 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Untuk Kamu 🤍</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0a0f20;
+    --navy:#141c38;
+    --navy-soft:#1c2747;
+    --gold:#d9a75b;
+    --gold-soft:#f0d9b5;
+    --blush:#e7b6b1;
+    --parchment:#f7efe2;
+    --ink:#2b2233;
+    --mist:#c9d1e0;
+    --mist-dim:#8a93ab;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(217,167,91,0.10), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(231,182,177,0.08), transparent),
+      linear-gradient(180deg, var(--navy-deep), #0d1430 60%, var(--navy-deep));
+    color:var(--mist);
+    font-family:'Nunito Sans', sans-serif;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* ---------- Stars ---------- */
+  .stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .star{
+    position:absolute;
+    width:2px;height:2px;
+    background:var(--gold-soft);
+    border-radius:50%;
+    opacity:.5;
+    animation:twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:.15; transform:scale(1);}
+    50%{opacity:.9; transform:scale(1.6);}
+  }
+  .stars.static .star{animation:none; opacity:.35;}
+
+  /* ---------- Layout ---------- */
+  .app{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 18px 90px;
+  }
+  .scene{
+    display:none;
+    width:100%;
+    max-width:560px;
+    text-align:center;
+    animation:rise .7s ease both;
+  }
+  .scene.active{display:block;}
+  .scene.leaving{animation:fade-out .35s ease both;}
+  @keyframes rise{
+    from{opacity:0; transform:translateY(18px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  @keyframes fade-out{
+    from{opacity:1; transform:translateY(0);}
+    to{opacity:0; transform:translateY(-10px);}
+  }
+
+  .motif{
+    width:22px;height:22px;
+    margin:0 auto 18px;
+    color:var(--gold);
+    opacity:.85;
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  h1,h2{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    color:var(--gold-soft);
+    margin:0 0 14px;
+    line-height:1.25;
+  }
+  .scene h1{font-size:clamp(28px,6vw,42px);}
+  .sub{
+    font-size:16px;
+    color:var(--mist);
+    line-height:1.7;
+    margin:0 0 22px;
+  }
+  .body-text{
+    font-size:15.5px;
+    line-height:1.85;
+    color:var(--mist);
+    text-align:left;
+    margin:0 auto 18px;
+    max-width:480px;
+  }
+  .hairline{
+    width:64px;height:1px;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin:0 auto 22px;
+  }
+
+  .btn-next{
+    appearance:none;
+    border:1px solid var(--gold);
+    background:transparent;
+    color:var(--gold-soft);
+    font-family:'Nunito Sans', sans-serif;
+    font-weight:700;
+    font-size:14.5px;
+    letter-spacing:.02em;
+    padding:13px 30px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .25s, color .25s, transform .15s;
+    margin-top:6px;
+  }
+  .btn-next:hover{background:var(--gold); color:#1a1326;}
+  .btn-next:active{transform:scale(.97);}
+  .btn-next:focus-visible{outline:2px solid var(--gold-soft); outline-offset:3px;}
+
+  /* ---------- Progress dots ---------- */
+  .progress{
+    position:fixed;
+    bottom:18px; left:0; right:0;
+    display:flex; justify-content:center; gap:7px;
+    z-index:5;
+  }
+  .progress span{
+    width:6px;height:6px;border-radius:50%;
+    background:rgba(217,167,91,.25);
+    transition:background .3s, transform .3s;
+  }
+  .progress span.on{background:var(--gold); transform:scale(1.25);}
+
+  /* ---------- Mute button ---------- */
+  .mute-btn{
+    position:fixed; top:16px; right:16px;
+    width:42px;height:42px;border-radius:50%;
+    border:1px solid rgba(217,167,91,.4);
+    background:rgba(20,28,56,.7);
+    color:var(--gold-soft);
+    font-size:17px;
+    cursor:pointer;
+    z-index:6;
+    transition:opacity .3s, transform .15s;
+  }
+  .mute-btn:active{transform:scale(.93);}
+  .mute-btn.hidden{opacity:0; pointer-events:none;}
+
+  /* ---------- Lock scene ---------- */
+  .seal{
+    width:88px;height:88px;
+    margin:0 auto 24px;
+    border-radius:50%;
+    position:relative;
+    box-shadow:0 10px 28px rgba(0,0,0,.45);
+  }
+  .seal-half{
+    position:absolute; top:0; width:50%; height:100%;
+    background:radial-gradient(circle at 35% 30%, var(--gold-soft), var(--gold) 55%, #a87937 100%);
+    transition:transform .6s ease, opacity .6s ease;
+  }
+  .seal-half.left{left:0; border-radius:50% 0 0 50%;}
+  .seal-half.right{right:0; border-radius:0 50% 50% 0;}
+  .seal-icon{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    color:#3a2a10; font-size:22px; transition:opacity .4s;
+  }
+  .seal.cracked .seal-half.left{transform:translate(-26px,-8px) rotate(-18deg); opacity:0;}
+  .seal.cracked .seal-half.right{transform:translate(26px,-8px) rotate(18deg); opacity:0;}
+  .seal.cracked .seal-icon{opacity:0;}
+
+  .pin-row{display:flex; gap:9px; justify-content:center; margin-bottom:16px;}
+  .pin-row.shake{animation:shake .45s ease;}
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-8px);}
+    40%{transform:translateX(8px);}
+    60%{transform:translateX(-6px);}
+    80%{transform:translateX(6px);}
+  }
+  .pin-box{
+    width:42px;height:52px;
+    border-radius:10px;
+    border:1px solid rgba(217,167,91,.4);
+    background:rgba(247,239,226,.04);
+    color:var(--gold-soft);
+    font-family:'Cormorant Garamond', serif;
+    font-size:24px;
+    text-align:center;
+    outline:none;
+  }
+  .pin-box:focus{border-color:var(--gold); background:rgba(217,167,91,.08);}
+  .pin-msg{
+    min-height:20px; font-size:13.5px; color:var(--blush);
+    margin-bottom:8px; opacity:0; transition:opacity .25s;
+  }
+  .pin-msg.show{opacity:1;}
+  .hint-toggle{
+    background:none; border:none; color:var(--mist-dim);
+    font-size:12.5px; text-decoration:underline; cursor:pointer;
+    margin-top:4px;
+  }
+  .hint-text{
+    font-size:13px; color:var(--mist-dim); font-style:italic;
+    max-height:0; overflow:hidden; transition:max-height .3s, opacity .3s; opacity:0;
+  }
+  .hint-text.show{max-height:60px; opacity:1; margin-top:8px;}
+
+  /* ---------- PIN numpad ---------- */
+  .numpad{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    max-width:260px;
+    margin:0 auto 20px;
+  }
+  .num-key{
+    appearance:none;
+    border:1px solid rgba(217,167,91,.3);
+    background:rgba(247,239,226,.03);
+    color:var(--gold-soft);
+    font-family:'Cormorant Garamond', serif;
+    font-size:21px;
+    font-weight:600;
+    padding:13px 0;
+    border-radius:12px;
+    cursor:pointer;
+    transition:border-color .2s, background .2s, transform .12s;
+  }
+  .num-key:hover{border-color:var(--gold); background:rgba(217,167,91,.1);}
+  .num-key:active{transform:scale(.94);}
+  .num-key.num-clear, .num-key.num-back{
+    font-family:'Nunito Sans', sans-serif;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--mist-dim);
+  }
+
+  /* ---------- Throwback: envelopes ---------- */
+  .tb-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+    margin:6px 0 20px;
+  }
+  .envelope{
+    appearance:none; border:none; background:none; cursor:pointer;
+    padding:0; display:flex; flex-direction:column; align-items:center; gap:10px;
+    transition:transform .25s ease;
+  }
+  .envelope:hover{transform:translateY(-3px);}
+  .envelope-body{
+    position:relative;
+    width:100%;
+    aspect-ratio:3/2.1;
+    background:linear-gradient(160deg, #efe1c4, var(--parchment) 60%);
+    border-radius:8px;
+    box-shadow:0 8px 18px rgba(0,0,0,.4), inset 0 0 0 1px rgba(217,167,91,.5);
+    overflow:hidden;
+  }
+  .envelope-body::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:100%;
+    background:linear-gradient(160deg, #e3d2ab, #d8c397);
+    clip-path:polygon(0 0, 100% 0, 50% 58%);
+    transition:clip-path .35s ease;
+  }
+  .envelope-body::after{
+    content:"✦";
+    position:absolute; left:50%; top:42%;
+    transform:translate(-50%,-50%);
+    color:var(--gold);
+    font-size:13px;
+    opacity:.85;
+  }
+  .envelope-year{
+    font-family:'Cormorant Garamond', serif;
+    font-size:18px; font-weight:600;
+    color:var(--gold-soft);
+  }
+  .envelope-meta{
+    font-size:10.5px; color:var(--mist-dim);
+    font-family:'Nunito Sans', sans-serif;
+  }
+  .envelope.flying .envelope-body{
+    animation:envelope-fly .55s ease forwards;
+  }
+  @keyframes envelope-fly{
+    0%{transform:scale(1); box-shadow:0 8px 18px rgba(0,0,0,.4), inset 0 0 0 1px rgba(217,167,91,.5);}
+    100%{transform:scale(1.12) translateY(-6px); box-shadow:0 16px 30px rgba(0,0,0,.5), inset 0 0 0 1px rgba(217,167,91,.7);}
+  }
+
+  /* ---------- Envelope modal ---------- */
+  .tb-overlay{
+    position:fixed; inset:0; z-index:20;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(7,10,22,0); padding:20px;
+    opacity:0; pointer-events:none;
+    transition:background .35s ease, opacity .35s ease;
+  }
+  .tb-overlay.show{
+    background:rgba(7,10,22,.82);
+    opacity:1; pointer-events:auto;
+  }
+  .tb-modal{
+    position:relative;
+    width:100%; max-width:420px;
+    max-height:84vh;
+    overflow-y:auto;
+    background:linear-gradient(165deg, #1a2545, var(--navy-soft));
+    border:1px solid rgba(217,167,91,.35);
+    border-radius:20px;
+    padding:26px 22px 24px;
+    box-shadow:0 24px 60px rgba(0,0,0,.55);
+    transform:scale(.82) translateY(18px);
+    opacity:0;
+    transition:transform .4s cubic-bezier(.2,.8,.2,1), opacity .4s ease;
+  }
+  .tb-overlay.show .tb-modal{transform:scale(1) translateY(0); opacity:1;}
+
+  .tb-envelope-open{
+    position:relative;
+    width:100%;
+    max-width:220px;
+    aspect-ratio:3/2.1;
+    margin:0 auto 18px;
+  }
+  .tb-flap-back, .tb-flap-front{
+    position:absolute; inset:0;
+    background:linear-gradient(160deg, #efe1c4, var(--parchment) 60%);
+    border-radius:8px;
+    box-shadow:inset 0 0 0 1px rgba(217,167,91,.5);
+  }
+  .tb-flap-front{
+    background:linear-gradient(160deg, #e3d2ab, #d8c397);
+    clip-path:polygon(0 0, 100% 0, 50% 58%);
+    transform-origin:top center;
+    transition:transform .55s cubic-bezier(.3,.7,.3,1);
+    z-index:2;
+  }
+  .tb-modal.opened .tb-flap-front{transform:rotateX(180deg) translateY(2px);}
+  .tb-envelope-open::after{
+    content:"✦"; position:absolute; left:50%; top:42%;
+    transform:translate(-50%,-50%); color:var(--gold); font-size:16px; z-index:1;
+  }
+
+  .tb-close{
+    position:absolute; top:14px; right:14px;
+    width:32px; height:32px; border-radius:50%;
+    border:1px solid rgba(217,167,91,.4);
+    background:rgba(10,15,32,.6);
+    color:var(--gold-soft);
+    font-size:15px; line-height:1;
+    cursor:pointer; z-index:5;
+    transition:background .2s, transform .15s;
+  }
+  .tb-close:hover{background:rgba(217,167,91,.2);}
+  .tb-close:active{transform:scale(.92);}
+
+  .tb-modal-body{display:none;}
+  .tb-modal.opened .tb-modal-body{display:block; animation:rise .45s ease both;}
+  .tb-modal.opened .tb-envelope-open{margin-bottom:14px;}
+
+  .tb-caption{font-size:14px; line-height:1.7; color:var(--mist); margin:0 0 16px; text-align:left;}
+  .tb-media-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:14px;
+  }
+  .polaroid{
+    background:var(--parchment); border-radius:6px; padding:7px 7px 12px;
+    box-shadow:0 6px 14px rgba(0,0,0,.3);
+    transform:rotate(var(--rot,0deg));
+  }
+  .polaroid img, .polaroid video{
+    width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:3px; display:block;
+    background:#0000;
+  }
+  .polaroid.missing img, .polaroid.missing video{display:none;}
+  .polaroid .ph-fallback{
+    display:none; width:100%; aspect-ratio:3/4; border-radius:3px;
+    background:linear-gradient(150deg, #e9d9bd, #d9c3a0);
+    align-items:center; justify-content:center; color:#8a6f43; font-size:22px;
+  }
+  .polaroid.missing .ph-fallback{display:flex;}
+  .polaroid .ph-label{
+    display:block; text-align:center; font-size:10.5px; color:#8a7558;
+    font-family:'Nunito Sans',sans-serif; margin-top:6px;
+  }
+
+  /* ---------- Hopes list ---------- */
+  .hopes-list{list-style:none; margin:0 0 22px; padding:0; text-align:left; max-width:440px; margin-inline:auto;}
+  .hopes-list li{
+    font-size:15px; line-height:1.7; color:var(--mist);
+    padding:10px 0 10px 22px;
+    border-bottom:1px solid rgba(217,167,91,.15);
+    position:relative;
+  }
+  .hopes-list li:last-child{border-bottom:none;}
+  .hopes-list li::before{
+    content:"✦"; position:absolute; left:0; top:10px; color:var(--gold); font-size:12px;
+  }
+
+  /* ---------- Mini game: memory match ---------- */
+  .game-intro{font-size:14px; color:var(--mist-dim); margin:0 0 18px;}
+  .game-stats{
+    display:flex; justify-content:center; gap:22px;
+    font-size:12.5px; color:var(--mist-dim);
+    margin-bottom:16px; letter-spacing:.04em; text-transform:uppercase;
+  }
+  .game-stats b{color:var(--gold-soft); font-family:'Cormorant Garamond',serif; font-size:16px; font-style:normal;}
+  .memory-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:9px;
+    max-width:380px; margin:0 auto 18px;
+    perspective:600px;
+  }
+  .mem-card{
+    aspect-ratio:3/4;
+    position:relative;
+    cursor:pointer;
+    appearance:none; border:none; background:none; padding:0;
+  }
+  .mem-card-inner{
+    position:absolute; inset:0;
+    transform-style:preserve-3d;
+    transition:transform .45s cubic-bezier(.3,.7,.3,1);
+  }
+  .mem-card.flipped .mem-card-inner, .mem-card.matched .mem-card-inner{
+    transform:rotateY(180deg);
+  }
+  .mem-face{
+    position:absolute; inset:0;
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    backface-visibility:hidden;
+    font-size:22px;
+  }
+  .mem-face.back{
+    background:linear-gradient(160deg, rgba(217,167,91,.16), rgba(20,28,56,.6));
+    border:1px solid rgba(217,167,91,.35);
+    color:var(--gold);
+  }
+  .mem-face.front{
+    background:var(--parchment);
+    color:#3a2a10;
+    transform:rotateY(180deg);
+    border:1px solid var(--gold);
+  }
+  .mem-card.matched .mem-face.front{
+    background:linear-gradient(160deg, #f0e3c8, var(--parchment));
+    box-shadow:0 0 0 2px var(--gold) inset;
+  }
+  .mem-card.matched{opacity:.55;}
+  .game-msg{
+    min-height:24px; font-size:14.5px; color:var(--gold-soft);
+    font-family:'Cormorant Garamond',serif; font-style:italic;
+    margin-bottom:14px; opacity:0; transition:opacity .3s;
+  }
+  .game-msg.show{opacity:1;}
+  .game-actions{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+  .btn-ghost{
+    appearance:none; border:1px solid rgba(217,167,91,.4);
+    background:transparent; color:var(--mist-dim);
+    font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:13px;
+    padding:11px 22px; border-radius:999px; cursor:pointer;
+    transition:border-color .2s, color .2s;
+  }
+  .btn-ghost:hover{border-color:var(--gold); color:var(--gold-soft);}
+
+  /* ---------- Media frames (video scenes) ---------- */
+  .media-frame{
+    border:1px solid rgba(217,167,91,.3);
+    border-radius:16px; overflow:hidden;
+    background:rgba(20,28,56,.5);
+    margin-bottom:20px; position:relative;
+  }
+  .media-frame video{width:100%; display:block; max-height:340px; background:#000;}
+  .media-frame.missing video{display:none;}
+  .media-fallback{
+    display:none; padding:60px 20px; text-align:center;
+    color:var(--mist-dim); font-size:14px;
+  }
+  .media-frame.missing .media-fallback{display:block;}
+
+  /* ---------- Gift ---------- */
+  .gift-box{width:130px; height:110px; margin:18px auto 6px; position:relative; cursor:pointer;}
+  .gift-base{width:100%; height:78px; background:linear-gradient(160deg, var(--gold), #a87937); border-radius:4px; position:absolute; bottom:0; box-shadow:0 8px 18px rgba(0,0,0,.35);}
+  .gift-lid{width:108%; left:-4%; height:30px; background:linear-gradient(160deg, var(--gold-soft), var(--gold)); border-radius:8px 8px 2px 2px; position:absolute; top:0; transition:transform .4s ease, opacity .4s ease; z-index:2; box-shadow:0 4px 10px rgba(0,0,0,.3);}
+  .gift-ribbon-v{position:absolute; left:50%; top:0; width:13px; height:100%; background:var(--blush); transform:translateX(-50%); z-index:1;}
+  .gift-ribbon-h{position:absolute; left:0; top:8px; width:100%; height:13px; background:var(--blush); z-index:3;}
+  .gift-bow{position:absolute; top:-16px; left:50%; transform:translateX(-50%); font-size:24px; z-index:4; transition:transform .4s ease, opacity .4s ease;}
+  .gift-box.opened .gift-lid{transform:translateY(-46px) rotate(-12deg); opacity:0;}
+  .gift-box.opened .gift-bow{transform:translate(-50%,-46px) rotate(-12deg); opacity:0;}
+  .gift-hint{font-size:12px; color:var(--mist-dim); margin-bottom:6px;}
+  .gift-note{
+    max-height:0; opacity:0; overflow:hidden; transition:max-height .4s, opacity .4s;
+    margin:16px 0; background:var(--parchment); color:var(--ink); border-radius:12px;
+    padding:0 16px; font-family:'Cormorant Garamond',serif; font-size:14.5px; line-height:1.6; text-align:left;
+  }
+  .gift-note.show{max-height:260px; opacity:1; padding:16px;}
+
+  .signature{
+    font-family:'Cormorant Garamond', serif; font-style:italic;
+    font-size:17px; color:var(--gold-soft); margin-top:6px;
+  }
+
+  @media (max-width:380px){
+    .pin-box{width:36px; height:46px; font-size:20px;}
+    .tb-grid{gap:8px;}
+    .numpad{max-width:230px; gap:8px;}
+    .num-key{font-size:18px; padding:11px 0;}
+    .memory-grid{gap:7px;}
+    .mem-face{font-size:18px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001s !important; transition-duration:.001s !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="app">
+
+  <!-- 1. LOCK -->
+  <section class="scene active" data-scene="lock">
+    <div class="seal" id="seal">
+      <div class="seal-half left"></div>
+      <div class="seal-half right"></div>
+      <div class="seal-icon">✦</div>
+    </div>
+    <div class="eyebrow">Kotak Kenangan</div>
+    <h1>Sebelum masuk,<br>buka dulu kuncinya ya byy</h1>
+    <p class="sub">Cuma satu kode yang bisa buka ini —<br>Aku tau dan Kamu juga tau ini pasti</p>
+    <div class="pin-row" id="pinRow">
+      <input class="pin-box" type="tel" inputmode="numeric" maxlength="1" data-i="0">
+      <input class="pin-box" type="tel" inputmode="numeric" maxlength="1" data-i="1">
+      <input class="pin-box" type="tel" inputmode="numeric" maxlength="1" data-i="2">
+      <input class="pin-box" type="tel" inputmode="numeric" maxlength="1" data-i="3">
+      <input class="pin-box" type="tel" inputmode="numeric" maxlength="1" data-i="4">
+      <input class="pin-box" type="tel" inputmode="numeric" maxlength="1" data-i="5">
+    </div>
+    <div class="pin-msg" id="pinMsg">salahhh ih, hayoo... coba lagi byy 🤍</div>
+    <div class="numpad" id="numpad">
+      <button class="num-key" type="button" data-num="1">1</button>
+      <button class="num-key" type="button" data-num="2">2</button>
+      <button class="num-key" type="button" data-num="3">3</button>
+      <button class="num-key" type="button" data-num="4">4</button>
+      <button class="num-key" type="button" data-num="5">5</button>
+      <button class="num-key" type="button" data-num="6">6</button>
+      <button class="num-key" type="button" data-num="7">7</button>
+      <button class="num-key" type="button" data-num="8">8</button>
+      <button class="num-key" type="button" data-num="9">9</button>
+      <button class="num-key num-clear" type="button" data-action="clear">Hapus<br>Semua</button>
+      <button class="num-key" type="button" data-num="0">0</button>
+      <button class="num-key num-back" type="button" data-action="back">⌫</button>
+    </div>
+    <button class="hint-toggle" id="hintToggle">Butuh bantuan?</button>
+    <p class="hint-text" id="hintText">Coba tanggal spesial punya kamu 😉</p>
+  </section>
+
+  <!-- 2. GREETING -->
+  <section class="scene" data-scene="greeting">
+    <div class="motif">✦</div>
+    <div class="eyebrow">Finally Bisa Masuk</div>
+    <h1>Hai, Sayangggg.</h1>
+    <p class="sub">Cintaku, Duniaku, Eaaaaa hihihi</p>
+    <div class="hairline"></div>
+    <p class="body-text" style="text-align:center;">Sebelum kita lanjut, aku mau make sure satu hal dulu byy.</p>
+    <h2 style="margin-top:0;">Kamu udah siap belom?</h2>
+    <button class="btn-next" id="readyBtn">Aku siap sayang 🤍</button>
+  </section>
+
+  <!-- 3. SPECIAL DAY -->
+  <section class="scene" data-scene="special">
+    <div class="motif">✦</div>
+    <div class="eyebrow">19 Juni</div>
+    <h1>Hari ini beda dari<br>hari-hari biasanya.</h1>
+    <p class="sub">Soalnya, ada satu orang yang ulang tahun hari ini.</p>
+    <p class="body-text" style="text-align:center; font-family:'Cormorant Garamond',serif; font-size:19px; color:var(--gold-soft);">Dan itu... kamu, Sayang. It's your special day!!!!</p>
+    <button class="btn-next" data-next>Lanjut</button>
+  </section>
+
+  <!-- 4. SHORT WISH -->
+  <section class="scene" data-scene="wish">
+    <div class="motif">✦</div>
+    <div class="eyebrow">Untuk Kamu</div>
+    <h1>Happy Birthday,<br>Sayang.</h1>
+    <p class="body-text" style="text-align:center;">
+      Semoga umur barumu dipenuhi hal-hal baik ya byy, langkah yang makin mantap, dan hati yang tetap secerah biasanya.
+      Aku titip banyak doa di hari ini, walau cuma bisa lewat tulisan hehehe. Semoga hari ini menjadi hari yang spesial buat kamu, Bahagia terus ya sayang.
+    </p>
+    <button class="btn-next" data-next>Tapi sebelum lanjut, aku mau bawa kamu muter waktu sebentar xixi →</button>
+  </section>
+
+  <!-- 5. THROWBACK -->
+  <section class="scene" data-scene="throwback">
+    <div class="motif">✦</div>
+    <div class="eyebrow">Tiga Tahun Terakhir</div>
+    <h1>Throwback: Ulang Tahunmu,<br>Versi Kita</h1>
+    <p class="sub">Tahun ini kita rayain dari jarak yang beda. Tapi sebelum itu, buka dulu amplop-amplop ini — satu per tahun.</p>
+
+    <div class="tb-grid" id="tbGrid">
+      <button class="envelope" data-year="2023">
+        <div class="envelope-body"></div>
+        <span class="envelope-year">2023</span>
+        <span class="envelope-meta"></span>
+      </button>
+      <button class="envelope" data-year="2024">
+        <div class="envelope-body"></div>
+        <span class="envelope-year">2024</span>
+        <span class="envelope-meta"></span>
+      </button>
+      <button class="envelope" data-year="2025">
+        <div class="envelope-body"></div>
+        <span class="envelope-year">2025</span>
+        <span class="envelope-meta"></span>
+      </button>
+    </div>
+
+    <button class="btn-next" data-next>Lanjut ke ucapan →</button>
+  </section>
+
+  <!-- Envelope modal overlay -->
+  <div class="tb-overlay" id="tbOverlay">
+    <div class="tb-modal" id="tbModal">
+      <button class="tb-close" id="tbClose" aria-label="Tutup">✕</button>
+      <div class="tb-envelope-open" id="tbEnvelopeOpen">
+        <div class="tb-flap-back"></div>
+        <div class="tb-flap-front"></div>
+      </div>
+      <div class="tb-modal-body" id="tbModalBody"></div>
+    </div>
+  </div>
+
+  <!-- 6. MAIN MESSAGE -->
+  <section class="scene" data-scene="main">
+    <div class="motif">✦</div>
+    <div class="eyebrow">Yang Ingin Aku Sampaikan</div>
+    <h1>Untuk Kamu,<br>di Ulang Tahun Ini</h1>
+    <div class="hairline"></div>
+    <p class="body-text">
+      Jarak kita emang nggak sependek dulu, tapi rasanya nggak pernah benar-benar jauh. Setiap kali aku kangen, aku selalu balik ingat satu hal: kita berdua udah lewatin lebih banyak hal daripada yang orang lain tahu.
+    </p>
+    <p class="body-text">
+      Ulang tahunmu tahun ini mungkin nggak sama seperti yang dulu — nggak ada sentuhan langsung, nggak ada kue yang bisa aku kasih ke kamu. Tapi rasa sayangnya sama, malah makin banyak, karena waktu jauh ngajarin aku buat lebih menghargai hal-hal kecil darimu.
+    </p>
+    <p class="body-text">
+      Terima kasih udah terus sama aku sampai hari ini ya byy.
+    </p>
+    <button class="btn-next" data-next>Lanjut</button>
+  </section>
+
+  <!-- 7. HOPES -->
+  <section class="scene" data-scene="hopes">
+    <div class="motif">✦</div>
+    <div class="eyebrow">Harapanku Untukmu byy</div>
+    <h1>Beberapa Hal<br>yang Aku Doain</h1>
+    <ul class="hopes-list">
+      <li>Semoga kamu selalu sehat yaaa byy, dijauhkan dari rasa capek, rasa sakit.</li>
+      <li>Semoga kerjaan dan rencana-rencanamu lancar, rezekinya makin mengalir deras.</li>
+      <li>Semoga kita ketemu lagi — beneran ketemu, bukan cuma lewat call atau video call hihi.</li>
+      <li>Semoga aku selalu jadi bagian dari ceritamu, di tahun ini dan tahun-tahun depannya.</li>
+    </ul>
+    <button class="btn-next" data-next>Lanjut ke video terakhir →</button>
+  </section>
+
+  <!-- 8. MINI GAME: MEMORY MATCH -->
+  <section class="scene" data-scene="memory">
+    <div class="motif">✦</div>
+    <div class="eyebrow">Sebelum Lanjut</div>
+    <h1>Main Dulu,<br>Yuk Sebentar</h1>
+    <p class="game-intro">Cocokkan sepasang kartu yang sama. Gampang, cuma buat selingan sebelum kado terakhirnya aku kasih.</p>
+
+    <div class="game-stats">
+      <span>Langkah <b id="memMoves">0</b></span>
+      <span>Pasangan <b id="memPairs">0/8</b></span>
+    </div>
+
+    <div class="memory-grid" id="memoryGrid"></div>
+
+    <p class="game-msg" id="memMsg">Yes! Semua udah ketemu pasangannya, kaya aku sama kamu menjadi pasangan eaaa 🤍</p>
+
+    <div class="game-actions">
+      <button class="btn-ghost" id="memResetBtn" type="button">Main ulang</button>
+      <button class="btn-next" id="memNextBtn" data-next disabled style="opacity:.45;">Lanjut ke video terakhir →</button>
+    </div>
+  </section>
+
+  <!-- 9. CLOSING VIDEO -->
+  <section class="scene" data-scene="video">
+    <div class="motif">✦</div>
+    <div class="eyebrow">Terakhir...</div>
+    <h1>Ada Satu Lagi<br>Buat Kamu</h1>
+    <p class="sub">Tonton ini sampai habis, ya.</p>
+    <div class="media-frame" id="closingFrame">
+      <video controls playsinline>
+        <source src="video/closing.mp4" type="video/mp4">
+      </video>
+      <div class="media-fallback">🎬 Video spesial untuk kamu</div>
+    </div>
+    <button class="btn-next" data-next>Lanjut</button>
+  </section>
+
+  <!-- 10. GIFT -->
+  <section class="scene" data-scene="gift">
+    <div class="motif">✦</div>
+    <div class="eyebrow">Eh, Masih Ada Lagi</div>
+    <h1>Satu Kado Kecil</h1>
+    <p class="gift-hint">Ketuk kadonya yaa byy</p>
+    <div class="gift-box" id="giftBox">
+      <div class="gift-bow">🎀</div>
+      <div class="gift-lid"></div>
+      <div class="gift-ribbon-v"></div>
+      <div class="gift-ribbon-h"></div>
+      <div class="gift-base"></div>
+    </div>
+    <div class="gift-note" id="giftNote">
+      Kadonya lagi on the way, mungkin hari ini atau besok sampainya. Semoga kamu suka ya byy 🤍
+    </div>
+    <button class="btn-next" id="giftContinueBtn" data-next style="display:none;">Lanjut ke penutup →</button>
+  </section>
+
+  <!-- 11. FINAL -->
+  <section class="scene" data-scene="final">
+    <div class="motif">✦</div>
+    <div class="eyebrow">Penutup</div>
+    <h1>Sampai Sini Dulu,<br>Sayang.</h1>
+    <p class="body-text" style="text-align:center;">
+      Makasih udah baca semua ini sampai akhir. Aku tahu ini cuma ala ala sederhana, tapi semua yang aku tulis di sini nyata — sama nyatanya kayak rasa sayangku ke kamu eaa kiw kiw.
+    </p>
+    <p class="body-text" style="text-align:center;">
+      Selamat ulang tahun, sekali lagi.
+    </p>
+    <p class="signature">Dengan sayang,<br>aku, yang selalu kangen kamu dari jauh 🤍</p>
+    <button class="btn-next" id="replayBtn" style="margin-top:18px;">Tonton ulang dari awal</button>
+  </section>
+
+</div>
+
+<div class="progress" id="progress"></div>
+<button class="mute-btn hidden" id="muteBtn">🔊</button>
+
+<audio id="bgMusic" loop preload="none">
+  <source src="audio/music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* =========================================================
+   EDIT DI SINI:
+   - PIN ada di variabel CORRECT_PIN (harus 6 digit angka,
+     bisa diisi lewat keyboard atau lewat numpad di layar)
+   - Foto/video throwback (amplop): ganti path di THROWBACK_DATA
+     (letakkan file di folder "images" sejajar file HTML ini)
+     -> tiap tahun = satu amplop. Foto akan tampil rasio 3:4.
+     -> kalau ada {type:"video", ...} di tahun itu, musik utama
+        otomatis pelan (duck) saat video diputar, lalu normal lagi.
+   - Musik: letakkan file di "audio/music.mp3"
+   - Video closing: letakkan file di "video/closing.mp4"
+   - Mini game memory match: ganti emoji di MEMORY_SYMBOLS kalau
+     mau, jumlahnya menentukan jumlah pasangan (default 8 pasang).
+   - Nama panggilan, ucapan inti, harapan, dan tanda tangan
+     bisa diedit langsung di bagian HTML di atas.
+========================================================= */
+
+const CORRECT_PIN = "190601";
+
+const THROWBACK_DATA = {
+  "2023": {
+    caption: "Tahun pertama kita rayain bareng. Ini pas aku masih ada kuliah deh byy, malemnya kita pergi nonton terus pulang aku ngasih kamu kue sama kado. Ga sempet makan kuenya bareng sih, tapi tetep happy!!!",
+    media: [
+      {type:"image", src:"images/2023-1.png"},
+      {type:"image", src:"images/2023-2.png"},
+      {type:"image", src:"images/2023-3.png"},
+    ]
+  },
+  "2024": {
+    caption: "Tahun ini ada lebih banyak cerita, lebih banyak momen yang kerekam. ini favorit aku sih, kita ngabisin waktu dari pagi sampe malem ya kayanya hehe. pokoknya vibesnya kerasa banget, mulai dari beli kue ngerayain bareng, terus cerita cerita, pergi ke bioskop, abis tu buka kado, kemeja yang langsung kamu pake wkwk. abis itu nonton baru pulangnya mampir makan malem hihi. seruuuu!!!",
+    media: [
+      {type:"image", src:"images/2024-1.png"},
+      {type:"image", src:"images/2024-2.png"},
+      {type:"image", src:"images/2024-3.png"},
+      {type:"image", src:"images/2024-4.png"},
+      {type:"video", src:"images/2024-video.mp4"},
+    ]
+  },
+  "2025": {
+    caption: "Nah yang terakhir ini kita rayain beberapa hari setelah tanggal ulang tahunmu. abis kayanya tanggal ulang tahunmu tuh pas weekday kamunya kerja kan, yauda jadi kita ketemu di weekend setelahnya. happy banget buka kado sambil nugas yak, akunya skripsian ga si itu hahahaa.",
+    media: [
+      {type:"image", src:"images/2025-1.png"},
+      {type:"image", src:"images/2025-2.png"},
+      {type:"image", src:"images/2025-3.png"},
+      {type:"image", src:"images/2025-4.png"},
+    ]
+  }
+};
+
+const ORDER = ["lock","greeting","special","wish","throwback","main","hopes","memory","video","gift","final"];
+
+/* ---------- Stars background ---------- */
+(function initStars(){
+  const c = document.getElementById('stars');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce) c.classList.add('static');
+  const count = window.innerWidth < 500 ? 50 : 90;
+  for(let i=0;i<count;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.top = Math.random()*100+'%';
+    s.style.left = Math.random()*100+'%';
+    const size = (Math.random()*1.6+1).toFixed(1);
+    s.style.width = size+'px';
+    s.style.height = size+'px';
+    s.style.animationDelay = (Math.random()*4).toFixed(2)+'s';
+    s.style.animationDuration = (3+Math.random()*3).toFixed(2)+'s';
+    c.appendChild(s);
+  }
+})();
+
+/* ---------- Progress dots ---------- */
+const progressEl = document.getElementById('progress');
+ORDER.forEach(()=>{
+  const d = document.createElement('span');
+  progressEl.appendChild(d);
+});
+function updateProgress(id){
+  const idx = ORDER.indexOf(id);
+  [...progressEl.children].forEach((d,i)=> d.classList.toggle('on', i===idx));
+}
+
+/* ---------- Scene navigation ---------- */
+let current = "lock";
+function goToScene(id){
+  const curEl = document.querySelector('.scene[data-scene="'+current+'"]');
+  const nextEl = document.querySelector('.scene[data-scene="'+id+'"]');
+  if(!nextEl) return;
+  curEl.classList.add('leaving');
+  setTimeout(()=>{
+    curEl.classList.remove('active','leaving');
+    nextEl.classList.add('active');
+    current = id;
+    updateProgress(id);
+    window.scrollTo({top:0, behavior:'instant'});
+  }, 320);
+}
+function nextScene(){
+  const idx = ORDER.indexOf(current);
+  if(idx < ORDER.length-1) goToScene(ORDER[idx+1]);
+}
+document.querySelectorAll('[data-next]').forEach(btn=>{
+  btn.addEventListener('click', nextScene);
+});
+updateProgress(current);
+
+/* ---------- PIN logic ---------- */
+const pinBoxes = [...document.querySelectorAll('.pin-box')];
+const pinRow = document.getElementById('pinRow');
+const pinMsg = document.getElementById('pinMsg');
+const seal = document.getElementById('seal');
+
+pinBoxes.forEach((box,i)=>{
+  box.addEventListener('input', ()=>{
+    box.value = box.value.replace(/[^0-9]/g,'').slice(0,1);
+    if(box.value && i < pinBoxes.length-1){
+      pinBoxes[i+1].focus();
+    }
+    if(pinBoxes.every(b=>b.value.length===1)){
+      checkPin();
+    }
+  });
+  box.addEventListener('keydown', (e)=>{
+    if(e.key === 'Backspace' && !box.value && i>0){
+      pinBoxes[i-1].focus();
+    }
+  });
+});
+
+function checkPin(){
+  const val = pinBoxes.map(b=>b.value).join('');
+  if(val === CORRECT_PIN){
+    seal.classList.add('cracked');
+    pinMsg.classList.remove('show');
+    setTimeout(()=> goToScene('greeting'), 650);
+  } else {
+    pinMsg.classList.add('show');
+    pinRow.classList.add('shake');
+    setTimeout(()=>{
+      pinRow.classList.remove('shake');
+      pinBoxes.forEach(b=> b.value='');
+      pinBoxes[0].focus();
+    }, 450);
+    setTimeout(()=> pinMsg.classList.remove('show'), 2200);
+  }
+}
+
+const hintToggle = document.getElementById('hintToggle');
+const hintText = document.getElementById('hintText');
+hintToggle.addEventListener('click', ()=>{
+  hintText.classList.toggle('show');
+});
+
+/* ---------- PIN numpad ---------- */
+const numpad = document.getElementById('numpad');
+function firstEmptyIndex(){
+  return pinBoxes.findIndex(b=> !b.value);
+}
+numpad.addEventListener('click', (e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  if(btn.dataset.num !== undefined){
+    let idx = firstEmptyIndex();
+    if(idx === -1) idx = pinBoxes.length-1; // all full: overwrite last
+    pinBoxes[idx].value = btn.dataset.num;
+    pinBoxes[idx].dispatchEvent(new Event('input'));
+  } else if(btn.dataset.action === 'clear'){
+    pinBoxes.forEach(b=> b.value='');
+    pinBoxes[0].focus();
+  } else if(btn.dataset.action === 'back'){
+    let idx = firstEmptyIndex();
+    idx = idx === -1 ? pinBoxes.length-1 : Math.max(0, idx-1);
+    pinBoxes[idx].value = '';
+    pinBoxes[idx].focus();
+  }
+});
+
+/* ---------- Music ---------- */
+const bgMusic = document.getElementById('bgMusic');
+const muteBtn = document.getElementById('muteBtn');
+const MUSIC_FULL_VOLUME = 1;
+const MUSIC_DUCK_VOLUME = 0.12;
+bgMusic.volume = MUSIC_FULL_VOLUME;
+
+document.getElementById('readyBtn').addEventListener('click', ()=>{
+  bgMusic.play().then(()=>{
+    muteBtn.classList.remove('hidden');
+  }).catch(()=>{ /* file musik belum ada / belum bisa autoplay, tidak masalah */ });
+  nextScene();
+});
+muteBtn.addEventListener('click', ()=>{
+  bgMusic.muted = !bgMusic.muted;
+  muteBtn.textContent = bgMusic.muted ? '🔈' : '🔊';
+});
+
+/* smoothly lower main music volume while a video (e.g. amplop 2024) plays,
+   so it doesn't clash with the video's own audio */
+let duckFadeId = null;
+function fadeMusicTo(target, ms){
+  clearInterval(duckFadeId);
+  const steps = 12;
+  const start = bgMusic.volume;
+  const diff = target - start;
+  let i = 0;
+  duckFadeId = setInterval(()=>{
+    i++;
+    bgMusic.volume = Math.max(0, Math.min(1, start + diff*(i/steps)));
+    if(i >= steps) clearInterval(duckFadeId);
+  }, ms/steps);
+}
+function duckMusic(){ fadeMusicTo(MUSIC_DUCK_VOLUME, 350); }
+function unduckMusic(){ fadeMusicTo(MUSIC_FULL_VOLUME, 450); }
+
+/* ---------- Throwback envelopes ---------- */
+const tbGrid = document.getElementById('tbGrid');
+const tbOverlay = document.getElementById('tbOverlay');
+const tbModal = document.getElementById('tbModal');
+const tbModalBody = document.getElementById('tbModalBody');
+const tbClose = document.getElementById('tbClose');
+
+function renderTbBody(year){
+  const data = THROWBACK_DATA[year];
+  if(!data) return '';
+  let mediaHtml = '';
+  data.media.forEach((m,i)=>{
+    const rot = (i%2===0 ? -2 : 2);
+    if(m.type === 'image'){
+      mediaHtml += `
+        <div class="polaroid" style="--rot:${rot}deg">
+          <img src="${m.src}" alt="Foto ${year}" loading="lazy"
+               onerror="this.parentElement.classList.add('missing')">
+          <div class="ph-fallback">🤍</div>
+          <span class="ph-label">${year}</span>
+        </div>`;
+    } else if(m.type === 'video'){
+      mediaHtml += `
+        <div class="polaroid" style="--rot:${rot}deg">
+          <video src="${m.src}" controls playsinline class="tb-inline-video"
+                 onerror="this.parentElement.classList.add('missing')"></video>
+          <div class="ph-fallback">🎬</div>
+          <span class="ph-label">video ${year}</span>
+        </div>`;
+    }
+  });
+  return `
+    <p class="tb-caption">${data.caption}</p>
+    <div class="tb-media-grid">${mediaHtml}</div>
+  `;
+}
+
+let envelopeOpenTimer = null;
+
+function openEnvelope(year, triggerEl){
+  // brief "fly to center" cue on the clicked envelope
+  if(triggerEl){
+    triggerEl.classList.add('flying');
+    setTimeout(()=> triggerEl.classList.remove('flying'), 560);
+  }
+
+  tbModalBody.innerHTML = renderTbBody(year);
+  tbModal.classList.remove('opened');
+  tbOverlay.classList.add('show');
+
+  // duck music if this year's media includes video, and wire up ducking
+  setupVideoDucking(year);
+
+  clearTimeout(envelopeOpenTimer);
+  envelopeOpenTimer = setTimeout(()=>{
+    tbModal.classList.add('opened');
+  }, 420);
+}
+
+function closeEnvelope(){
+  tbOverlay.classList.remove('show');
+  unduckMusic();
+  setTimeout(()=>{
+    tbModal.classList.remove('opened');
+    tbModalBody.innerHTML = '';
+  }, 350);
+}
+
+tbGrid.querySelectorAll('.envelope').forEach(env=>{
+  env.addEventListener('click', ()=>{
+    openEnvelope(env.dataset.year, env);
+  });
+});
+tbClose.addEventListener('click', closeEnvelope);
+tbOverlay.addEventListener('click', (e)=>{
+  if(e.target === tbOverlay) closeEnvelope();
+});
+
+/* duck the main background music whenever an inline video inside
+   the envelope modal is playing, restore it when paused/closed */
+function setupVideoDucking(year){
+  const vids = tbModalBody.querySelectorAll('.tb-inline-video');
+  vids.forEach(v=>{
+    v.addEventListener('play', ()=> duckMusic());
+    v.addEventListener('pause', ()=> unduckMusic());
+    v.addEventListener('ended', ()=> unduckMusic());
+  });
+}
+
+/* ---------- Closing video fallback ---------- */
+const closingFrame = document.getElementById('closingFrame');
+const closingVideo = closingFrame.querySelector('video');
+closingVideo.addEventListener('error', ()=> closingFrame.classList.add('missing'));
+closingVideo.addEventListener('play', ()=> duckMusic());
+closingVideo.addEventListener('pause', ()=> unduckMusic());
+closingVideo.addEventListener('ended', ()=> unduckMusic());
+document.querySelector('.scene[data-scene="video"] [data-next]').addEventListener('click', ()=>{
+  closingVideo.pause();
+  unduckMusic();
+});
+
+/* ---------- Gift ---------- */
+const giftBox = document.getElementById('giftBox');
+const giftNote = document.getElementById('giftNote');
+const giftContinueBtn = document.getElementById('giftContinueBtn');
+giftBox.addEventListener('click', ()=>{
+  if(giftBox.classList.contains('opened')) return;
+  giftBox.classList.add('opened');
+  setTimeout(()=>{
+    giftNote.classList.add('show');
+    giftContinueBtn.style.display = 'inline-block';
+  }, 350);
+});
+
+/* ---------- Mini game: memory match ---------- */
+const MEMORY_SYMBOLS = ["🤍","✦","💌","🌙","🎂","📷","✨","🥂"];
+const memoryGrid = document.getElementById('memoryGrid');
+const memMoves = document.getElementById('memMoves');
+const memPairs = document.getElementById('memPairs');
+const memMsg = document.getElementById('memMsg');
+const memResetBtn = document.getElementById('memResetBtn');
+const memNextBtn = document.getElementById('memNextBtn');
+
+let memState = { cards:[], flipped:[], moves:0, matched:0, busy:false };
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function buildMemoryGame(){
+  const deck = shuffle([...MEMORY_SYMBOLS, ...MEMORY_SYMBOLS]);
+  memState = { cards:deck, flipped:[], moves:0, matched:0, busy:false };
+  memMoves.textContent = '0';
+  memPairs.textContent = `0/${MEMORY_SYMBOLS.length}`;
+  memMsg.classList.remove('show');
+  memNextBtn.disabled = true;
+  memNextBtn.style.opacity = .45;
+
+  memoryGrid.innerHTML = '';
+  deck.forEach((symbol, i)=>{
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'mem-card';
+    card.dataset.index = i;
+    card.innerHTML = `
+      <div class="mem-card-inner">
+        <div class="mem-face back">✦</div>
+        <div class="mem-face front">${symbol}</div>
+      </div>`;
+    card.addEventListener('click', ()=> handleCardClick(card, i));
+    memoryGrid.appendChild(card);
+  });
+}
+
+function handleCardClick(card, i){
+  if(memState.busy) return;
+  if(card.classList.contains('flipped') || card.classList.contains('matched')) return;
+  if(memState.flipped.length === 2) return;
+
+  card.classList.add('flipped');
+  memState.flipped.push({card, i});
+
+  if(memState.flipped.length === 2){
+    memState.moves++;
+    memMoves.textContent = memState.moves;
+    const [a,b] = memState.flipped;
+    if(memState.cards[a.i] === memState.cards[b.i]){
+      a.card.classList.add('matched');
+      b.card.classList.add('matched');
+      memState.flipped = [];
+      memState.matched++;
+      memPairs.textContent = `${memState.matched}/${MEMORY_SYMBOLS.length}`;
+      if(memState.matched === MEMORY_SYMBOLS.length){
+        memMsg.classList.add('show');
+        memNextBtn.disabled = false;
+        memNextBtn.style.opacity = 1;
+      }
+    } else {
+      memState.busy = true;
+      setTimeout(()=>{
+        a.card.classList.remove('flipped');
+        b.card.classList.remove('flipped');
+        memState.flipped = [];
+        memState.busy = false;
+      }, 700);
+    }
+  }
+}
+
+memResetBtn.addEventListener('click', buildMemoryGame);
+buildMemoryGame();
+
+/* ---------- Replay ---------- */
+document.getElementById('replayBtn').addEventListener('click', ()=>{
+  pinBoxes.forEach(b=> b.value='');
+  seal.classList.remove('cracked');
+  document.querySelector('.scene.active').classList.remove('active');
+  document.querySelector('.scene[data-scene="lock"]').classList.add('active');
+  current = "lock";
+  updateProgress('lock');
+  bgMusic.pause();
+  bgMusic.currentTime = 0;
+  bgMusic.volume = MUSIC_FULL_VOLUME;
+  muteBtn.classList.add('hidden');
+  closeEnvelope();
+  buildMemoryGame();
+  giftBox.classList.remove('opened');
+  giftNote.classList.remove('show');
+  giftContinueBtn.style.display = 'none';
+  pinBoxes[0].focus();
+});
+</script>
+
+</body>
+</html>
